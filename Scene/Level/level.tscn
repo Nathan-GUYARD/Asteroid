@@ -1,0 +1,81 @@
+[gd_scene load_steps=10 format=3 uid="uid://d2dukliy0kd6y"]
+
+[ext_resource type="Script" path="res://Scene/Level/Script/level.gd" id="1_m8wcx"]
+[ext_resource type="PackedScene" uid="uid://bn1hr2phbm1nv" path="res://Scene/Player/player.tscn" id="1_oe5g7"]
+[ext_resource type="Script" path="res://Resources/Mode/game_mode.gd" id="2_p40rj"]
+[ext_resource type="Script" path="res://Scene/Level/Script/projectile_factory.gd" id="2_yav67"]
+[ext_resource type="PackedScene" uid="uid://f3e1hsed8x40" path="res://Scene/Asteroid/asteroid.tscn" id="3_gq6el"]
+[ext_resource type="Texture2D" uid="uid://sk78g7ap2uau" path="res://Scene/Level/Sprite/Background.png" id="5_d6enb"]
+
+[sub_resource type="Resource" id="Resource_uqqw8"]
+script = ExtResource("2_p40rj")
+timer_acceleration = 0.99
+max_timer = 0.15
+
+[sub_resource type="Resource" id="Resource_0ovee"]
+script = ExtResource("2_p40rj")
+timer_acceleration = 0.96
+max_timer = 0.09
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yuvhu"]
+
+[node name="level" type="Area2D"]
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("1_m8wcx")
+level_mode_array = Array[ExtResource("2_p40rj")]([SubResource("Resource_uqqw8"), SubResource("Resource_0ovee")])
+asteroid_scene = ExtResource("3_gq6el")
+
+[node name="Player" parent="." instance=ExtResource("1_oe5g7")]
+unique_name_in_owner = true
+position = Vector2(240, 135)
+
+[node name="ProjectileFactory" type="Node2D" parent="."]
+script = ExtResource("2_yav67")
+metadata/_edit_lock_ = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = -20
+theme_override_constants/margin_top = -20
+theme_override_constants/margin_right = -20
+theme_override_constants/margin_bottom = -20
+metadata/_edit_lock_ = true
+
+[node name="Border" type="ReferenceRect" parent="CanvasLayer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="AsteroidsContainer" type="Node2D" parent="."]
+unique_name_in_owner = true
+metadata/_edit_lock_ = true
+
+[node name="SpawnTimer" type="Timer" parent="AsteroidsContainer"]
+unique_name_in_owner = true
+wait_time = 0.9
+autostart = true
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(240, 135)
+texture = ExtResource("5_d6enb")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(240, 135)
+scale = Vector2(30, 19)
+shape = SubResource("RectangleShape2D_yuvhu")
+debug_color = Color(0.941176, 0, 0.607843, 0.419608)
+metadata/_edit_lock_ = true
+
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="mode_changed" from="." to="." method="update_mode"]
+[connection signal="projectile_fired" from="Player" to="ProjectileFactory" method="spawn_projectile"]
+[connection signal="timeout" from="AsteroidsContainer/SpawnTimer" to="." method="_on_spawn_timer_timeout"]

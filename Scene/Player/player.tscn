@@ -1,0 +1,49 @@
+[gd_scene load_steps=9 format=3 uid="uid://bn1hr2phbm1nv"]
+
+[ext_resource type="Texture2D" uid="uid://d0tq07ur57nt0" path="res://Scene/Player/Sprite/Ship.png" id="1_7snpj"]
+[ext_resource type="Script" path="res://Scene/Player/Script/player.gd" id="1_db0i3"]
+[ext_resource type="PackedScene" uid="uid://bbr50tcogbcgn" path="res://Scene/Projectile/projectile.tscn" id="2_bmjt0"]
+[ext_resource type="Script" path="res://Resources/Player/player_sprite.gd" id="2_e4748"]
+[ext_resource type="Texture2D" uid="uid://cyqf33kcw6lby" path="res://Scene/Player/Sprite/Ship_touch.png" id="4_kbbp7"]
+
+[sub_resource type="Resource" id="Resource_m7hcf"]
+script = ExtResource("2_e4748")
+texture = ExtResource("1_7snpj")
+
+[sub_resource type="Resource" id="Resource_eunnm"]
+script = ExtResource("2_e4748")
+texture = ExtResource("4_kbbp7")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fr8wl"]
+
+[node name="Player" type="CharacterBody2D"]
+z_index = 1
+collision_mask = 0
+script = ExtResource("1_db0i3")
+player_texture_array = Array[ExtResource("2_e4748")]([SubResource("Resource_m7hcf"), SubResource("Resource_eunnm")])
+projectile_scene = ExtResource("2_bmjt0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = ExtResource("1_7snpj")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 0)
+scale = Vector2(0.5, 0.5)
+shape = SubResource("CircleShape2D_fr8wl")
+metadata/_edit_lock_ = true
+
+[node name="DeathTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 1.2
+one_shot = true
+
+[node name="FireDelay" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.1
+one_shot = true
+
+[connection signal="texture_changed" from="." to="." method="update_texture"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]
+[connection signal="timeout" from="FireDelay" to="." method="_on_fire_delay_timeout"]

@@ -1,0 +1,86 @@
+[gd_scene load_steps=6 format=3 uid="uid://cfotahqgbmnv0"]
+
+[ext_resource type="Script" path="res://Scene/Menu/Script/menu.gd" id="1_wbkr3"]
+[ext_resource type="PackedScene" uid="uid://d2dukliy0kd6y" path="res://Scene/Level/level.tscn" id="1_wjw6d"]
+[ext_resource type="Script" path="res://Scene/Menu/Script/Score.gd" id="3_7jwhy"]
+[ext_resource type="Script" path="res://Scene/Menu/Script/time.gd" id="4_g0ooq"]
+
+[sub_resource type="Theme" id="Theme_58guk"]
+
+[node name="menu" type="Node2D"]
+script = ExtResource("1_wbkr3")
+level_scene = ExtResource("1_wjw6d")
+
+[node name="LevelContainer" type="Node2D" parent="."]
+unique_name_in_owner = true
+metadata/_edit_lock_ = true
+
+[node name="Menu" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="BorderLayer" type="Control" parent="Menu"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="CenterContainer" type="CenterContainer" parent="Menu/BorderLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/BorderLayer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+metadata/_edit_lock_ = true
+
+[node name="CenterContainer2" type="CenterContainer" parent="Menu/BorderLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="Score" type="Label" parent="Menu/BorderLayer/CenterContainer/VBoxContainer/CenterContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Score"
+script = ExtResource("3_7jwhy")
+
+[node name="CenterContainer3" type="CenterContainer" parent="Menu/BorderLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="Time" type="Label" parent="Menu/BorderLayer/CenterContainer/VBoxContainer/CenterContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Temps"
+script = ExtResource("4_g0ooq")
+
+[node name="CenterContainer" type="CenterContainer" parent="Menu/BorderLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu/BorderLayer/CenterContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="NormalMode" type="Button" parent="Menu/BorderLayer/CenterContainer/VBoxContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Normal"
+
+[node name="HardMode" type="Button" parent="Menu/BorderLayer/CenterContainer/VBoxContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_58guk")
+theme_override_font_sizes/font_size = 20
+text = "Hardcore"
+
+[connection signal="pressed" from="Menu/BorderLayer/CenterContainer/VBoxContainer/CenterContainer/HBoxContainer/NormalMode" to="." method="_on_normal_mode_pressed"]
+[connection signal="pressed" from="Menu/BorderLayer/CenterContainer/VBoxContainer/CenterContainer/HBoxContainer/HardMode" to="." method="_on_hard_mode_pressed"]

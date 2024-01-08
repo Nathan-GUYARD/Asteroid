@@ -1,0 +1,51 @@
+[gd_scene load_steps=12 format=3 uid="uid://f3e1hsed8x40"]
+
+[ext_resource type="Script" path="res://Scene/Asteroid/Script/asteroid.gd" id="1_ejbeh"]
+[ext_resource type="Texture2D" uid="uid://c5v6l3wrv23hb" path="res://Scene/Asteroid/Sprite/AsteroidBig.png" id="1_xaubp"]
+[ext_resource type="Script" path="res://Resources/AsteroidSize/asteroid_size.gd" id="2_haq8x"]
+[ext_resource type="Texture2D" uid="uid://df7o3ulolm1ef" path="res://Scene/Asteroid/Sprite/AsteroidSmall.png" id="3_dsr75"]
+[ext_resource type="Texture2D" uid="uid://6d18wt1v2rsk" path="res://Scene/Asteroid/Sprite/AsteroidMedium.png" id="4_eoqa8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fjbdm"]
+radius = 3.0
+
+[sub_resource type="Resource" id="Resource_iiyg3"]
+script = ExtResource("2_haq8x")
+texture = ExtResource("3_dsr75")
+shape_collision = SubResource("CircleShape2D_fjbdm")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rgqug"]
+radius = 7.0
+
+[sub_resource type="Resource" id="Resource_04cd4"]
+script = ExtResource("2_haq8x")
+texture = ExtResource("4_eoqa8")
+shape_collision = SubResource("CircleShape2D_rgqug")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u5fad"]
+radius = 13.0
+
+[sub_resource type="Resource" id="Resource_15n34"]
+script = ExtResource("2_haq8x")
+texture = ExtResource("1_xaubp")
+shape_collision = SubResource("CircleShape2D_u5fad")
+
+[node name="asteroid" type="Area2D"]
+collision_layer = 4
+collision_mask = 5
+script = ExtResource("1_ejbeh")
+asteroid_size_array = Array[ExtResource("2_haq8x")]([SubResource("Resource_iiyg3"), SubResource("Resource_04cd4"), SubResource("Resource_15n34")])
+torque_max = 50.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = ExtResource("1_xaubp")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_u5fad")
+debug_color = Color(0.996078, 0, 0.215686, 0.419608)
+metadata/_edit_lock_ = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
